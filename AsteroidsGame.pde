@@ -1,10 +1,8 @@
-//your variable declarations here
-public void setup() 
-{
-  //your code here
+Spaceship Player = new Spaceship();
+public void setup() {
+  size(300, 300);
 }
 public void draw() 
 {
-  //your code here
+  Player.show();
 }
-
