@@ -4,5 +4,8 @@ public void setup() {
 }
 public void draw() 
 {
+  background(255);
   Player.show();
+  Player.move();
+  Player.accel();
 }

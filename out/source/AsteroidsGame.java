@@ -1,3 +1,30 @@
+import processing.core.*; 
+import processing.data.*; 
+import processing.event.*; 
+import processing.opengl.*; 
+
+import java.util.HashMap; 
+import java.util.ArrayList; 
+import java.io.File; 
+import java.io.BufferedReader; 
+import java.io.PrintWriter; 
+import java.io.InputStream; 
+import java.io.OutputStream; 
+import java.io.IOException; 
+
+public class AsteroidsGame extends PApplet {
+
+Spaceship Player = new Spaceship();
+public void setup() {
+  
+}
+public void draw() 
+{
+  background(255);
+  Player.show();
+  Player.move();
+  Player.accel();
+}
 abstract class Floater //Do NOT modify the Floater class! Make changes in the Spaceship class 
 {   
   protected int corners;  //the number of corners, a triangular floater has 3   
@@ -87,3 +114,61 @@ abstract class Floater //Do NOT modify the Floater class! Make changes in the Sp
     translate(-1*(float)myCenterX, -1*(float)myCenterY);
   }   
 } 
+class Spaceship extends Floater { 
+    public Spaceship() {
+        corners = 4;
+        int[] xS = {-8, 16, -8, -2};
+        int[] yS = {-8, 0, 8, 0};
+        xCorners = xS;
+        yCorners = yS;
+    }
+    public void accel() {
+        if (keyPressed && key == 'w') {
+            accelerate(0.15f, 'x');
+        } else if (myDirectionX > 0) {
+            accelerate(-0.25f, 'x');
+        } 
+        if (keyPressed && key == 'w') {
+            accelerate(0.15f, 'y');
+        } else if (myDirectionX > 0) {
+            accelerate(-0.25f, 'y');
+        } 
+        if (myDirectionX < 0) {
+            myDirectionX = 0;
+        }
+        if (myDirectionY < 0) {
+          myDirectionY = 0;
+        }
+        if (keyPressed && key == 'd') {
+            turn(5);
+        } else if (keyPressed && key == 'a') {
+            turn(-5);
+        }
+        System.out.println(myDirectionX);
+        //System.out.println(myDirectionY);
+    }
+    public void setX(int x) {myCenterX = x;}  
+    public int getX() {return (int)myCenterX;}   
+    public void setY(int y) {myCenterY = y;}   
+    public int getY() {return (int)myCenterY;}   
+    public void setDirectionX(double x) {myDirectionX = x;}   
+    public double getDirectionX() {return myDirectionX;}
+    public void setDirectionY(double y) {myDirectionY = y;}
+    public double getDirectionY() {return myDirectionY;}
+    public void setPointDirection(int degrees) {myPointDirection = degrees;}   
+    public double getPointDirection() {return myPointDirection;}
+}
+class Star //note that this class does NOT extend Floater
+{
+  //your code here
+}
+  public void settings() {  size(300, 300); }
+  static public void main(String[] passedArgs) {
+    String[] appletArgs = new String[] { "AsteroidsGame" };
+    if (passedArgs != null) {
+      PApplet.main(concat(appletArgs, passedArgs));
+    } else {
+      PApplet.main(appletArgs);
+    }
+  }
+}
