@@ -23,12 +23,13 @@ abstract class Floater //Do NOT modify the Floater class! Make changes in the Sp
   {          
     //convert the current direction the floater is pointing to radians    
     double dRadians =myPointDirection*(Math.PI/180);     
-    //change coordinates of direction of travel    
-    if (direction == 'x') {
-      myDirectionX += ((dAmount) * Math.cos(dRadians));
-    } else if (direction == 'y') {
-      myDirectionY += ((dAmount) * Math.sin(dRadians));       
-    }
+    //change coordinates of direction of travel
+        if (direction == 'x') {
+            myDirectionX += ((dAmount) * Math.cos(dRadians));
+        }
+        if (direction == 'y') {
+            myDirectionY += ((dAmount) * Math.sin(dRadians)); 
+        }      
   }   
   public void turn (int nDegreesOfRotation)   
   {     

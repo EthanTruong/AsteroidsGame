@@ -16,14 +16,14 @@ public class AsteroidsGame extends PApplet {
 
 Spaceship Player = new Spaceship();
 public void setup() {
-  
+    
 }
-public void draw() 
-{
-  background(255);
-  Player.show();
-  Player.move();
-  Player.accel();
+
+public void draw() {
+    background(255);
+    Player.show();
+    Player.move();
+    Player.accel();
 }
 abstract class Floater //Do NOT modify the Floater class! Make changes in the Spaceship class 
 {   
@@ -50,12 +50,13 @@ abstract class Floater //Do NOT modify the Floater class! Make changes in the Sp
   {          
     //convert the current direction the floater is pointing to radians    
     double dRadians =myPointDirection*(Math.PI/180);     
-    //change coordinates of direction of travel    
-    if (direction == 'x') {
-      myDirectionX += ((dAmount) * Math.cos(dRadians));
-    } else if (direction == 'y') {
-      myDirectionY += ((dAmount) * Math.sin(dRadians));       
-    }
+    //change coordinates of direction of travel
+        if (direction == 'x') {
+            myDirectionX += ((dAmount) * Math.cos(dRadians));
+        }
+        if (direction == 'y') {
+            myDirectionY += ((dAmount) * Math.sin(dRadians)); 
+        }      
   }   
   public void turn (int nDegreesOfRotation)   
   {     
@@ -123,21 +124,35 @@ class Spaceship extends Floater {
         yCorners = yS;
     }
     public void accel() {
+        boolean wIsPressed = false;
         if (keyPressed && key == 'w') {
-            accelerate(0.15f, 'x');
-        } else if (myDirectionX > 0) {
-            accelerate(-0.25f, 'x');
-        } 
-        if (keyPressed && key == 'w') {
-            accelerate(0.15f, 'y');
-        } else if (myDirectionX > 0) {
-            accelerate(-0.25f, 'y');
-        } 
-        if (myDirectionX < 0) {
-            myDirectionX = 0;
+            wIsPressed = true;
+            System.out.println(wIsPressed);
+        } else {
+            wIsPressed = false;
+            System.out.println(wIsPressed);
         }
-        if (myDirectionY < 0) {
-          myDirectionY = 0;
+        if (wIsPressed) {
+            if (myDirectionX < 10 && myDirectionX > -10) {
+                accelerate(0.15f, 'x');
+            }
+        } else if (!wIsPressed) {
+            if (myDirectionX > 0) {
+                myDirectionX -= 0.25f;
+            } else if (myDirectionX < 0) {
+                myDirectionX += 0.25f;
+            }
+            if (myDirectionY > 0) {
+                myDirectionY -= 0.25f;
+            } else if (myDirectionY < 0) {
+                myDirectionY += 0.25f;
+            }
+            if (myDirectionY > -0.1f && myDirectionY < 0.1f) {
+                myDirectionY = 0;
+            }
+            if (myDirectionX > -0.1f && myDirectionX < 0.1f) {
+                myDirectionX = 0;
+            }
         }
         if (keyPressed && key == 'd') {
             turn(5);
@@ -145,7 +160,7 @@ class Spaceship extends Floater {
             turn(-5);
         }
         System.out.println(myDirectionX);
-        //System.out.println(myDirectionY);
+        System.out.println(myDirectionY);
     }
     public void setX(int x) {myCenterX = x;}  
     public int getX() {return (int)myCenterX;}   

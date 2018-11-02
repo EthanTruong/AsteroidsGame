@@ -7,21 +7,38 @@ class Spaceship extends Floater {
         yCorners = yS;
     }
     public void accel() {
+        boolean wIsPressed = false;
         if (keyPressed && key == 'w') {
-            accelerate(0.15, 'x');
-        } else if (myDirectionX > 0) {
-            accelerate(-0.25, 'x');
-        } 
-        if (keyPressed && key == 'w') {
-            accelerate(0.15, 'y');
-        } else if (myDirectionX > 0) {
-            accelerate(-0.25, 'y');
-        } 
-        if (myDirectionX < 0) {
-            myDirectionX = 0;
+            wIsPressed = true;
+            System.out.println(wIsPressed);
+        } else {
+            wIsPressed = false;
+            System.out.println(wIsPressed);
         }
-        if (myDirectionY < 0) {
-          myDirectionY = 0;
+        if (wIsPressed) {
+            if (myDirectionX < 25 && myDirectionX > -25) {
+                accelerate(0.15, 'x');
+            }
+            if (myDirectionY < 25 && myDirectionY > -25) {
+                accelerate(0.15, 'y');
+            }
+        } else if (!wIsPressed) {
+            if (myDirectionX > 0) {
+                myDirectionX -= 0.25;
+            } else if (myDirectionX < 0) {
+                myDirectionX += 0.25;
+            }
+            if (myDirectionY > 0) {
+                myDirectionY -= 0.25;
+            } else if (myDirectionY < 0) {
+                myDirectionY += 0.25;
+            }
+            if (myDirectionY > -0.1 && myDirectionY < 0.1) {
+                myDirectionY = 0;
+            }
+            if (myDirectionX > -0.1 && myDirectionX < 0.1) {
+                myDirectionX = 0;
+            }
         }
         if (keyPressed && key == 'd') {
             turn(5);
@@ -29,7 +46,7 @@ class Spaceship extends Floater {
             turn(-5);
         }
         System.out.println(myDirectionX);
-        //System.out.println(myDirectionY);
+        System.out.println(myDirectionY);
     }
     public void setX(int x) {myCenterX = x;}  
     public int getX() {return (int)myCenterX;}   
