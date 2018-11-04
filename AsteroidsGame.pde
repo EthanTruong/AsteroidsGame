@@ -15,6 +15,7 @@ public void draw() {
 
 public void accelerate() {
     // DEBUG
+    for(int i = 0; i < 6; i++) {System.out.println("");}
     System.out.println("angle (radians): " + Player.getPointDirection()*(Math.PI/180)); // angle (radians)
     System.out.println("max x: " + Player.getTopSpeedX() + ",  max y: " + Player.getTopSpeedY()); // converted top speeds
     System.out.println("speed x: " + Player.getDirectionX() + ",  speed y: " + Player.getDirectionY()); // actual speeds
