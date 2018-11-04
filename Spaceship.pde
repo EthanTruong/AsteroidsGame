@@ -2,7 +2,7 @@ class Spaceship extends Floater {
     protected double myTopSpeed;
 
     public Spaceship() {
-        myTopSpeed = 20.0;
+        myTopSpeed = 10.0;
         corners = 4;
         int[] xS = {-8, 16, -8, -2};
         int[] yS = {-8, 0, 8, 0};
