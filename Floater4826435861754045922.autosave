@@ -22,7 +22,7 @@ abstract class Floater //Do NOT modify the Floater class! Make changes in the Sp
   public void accelerate (double dAmount, String direction)
   {          
     //convert the current direction the floater is pointing to radians    
-    double dRadians = myPointDirection*(Math.PI/180);
+    double dRadians =abs((float)(myPointDirection*(Math.PI/180)));
     //change coordinates of direction of travel
         if (direction == "x") {
             myDirectionX += ((dAmount) * Math.cos(dRadians));

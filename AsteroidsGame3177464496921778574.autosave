@@ -1,0 +1,59 @@
+Spaceship Player = new Spaceship();
+boolean wIsPressed, aIsPressed, dIsPressed = false;
+
+public void setup() {
+    size(500, 500);
+}
+
+public void draw() {
+    background(255);
+    Player.show();
+    Player.move();
+    accelerate();
+}
+
+public void accelerate() {
+    if (aIsPressed) { Player.turn(-5); }
+    if (dIsPressed) { Player.turn(5); }
+    if (wIsPressed) {
+        //if (Player.getDirectionX() < -Player.getTopSpeedX() && Player.getDirectionX() > Player.getTopSpeedX()) {
+        if ((Player.getPointDirection()*(Math.PI/180)) < Math.PI && (Player.getPointDirection()*(Math.PI/180)) > 0) {
+            if (Player.getDirectionX() < -Player.getTopSpeedX() && Player.getDirectionX() > Player.getTopSpeedX()) {
+                Player.accelerate(0.15, "x");
+            }
+        }
+        if (Player.getDirectionY() < -Player.getTopSpeedY() && Player.getDirectionY() > Player.getTopSpeedY()) {
+            Player.accelerate(0.15, "y");
+        }
+    } else if (!wIsPressed) {
+        if (Player.getDirectionX() > 0) {
+            Player.accelerate(-0.25, "x");
+        } else if (Player.getDirectionX() < 0) {
+            Player.accelerate(-0.25 , "x2");
+        }
+        if (Player.getDirectionY() > 0) {
+            Player.accelerate(-0.25 , "y");
+        } else if (Player.getDirectionY() < 0) {
+            Player.accelerate(0.25 , "y2");
+        }
+        if (Player.getDirectionY() > -0.2 && Player.getDirectionY() < 0.2) {
+            Player.setDirectionY(0);
+        }
+        if (Player.getDirectionX() > -0.2 && Player.getDirectionX() < 0.2) {
+            Player.setDirectionX(0);
+        }
+    }
+    System.out.println(Player.getDirectionX() + " " + Player.getDirectionY());
+}
+
+void keyPressed() {
+    if ( key == 'w' ) { wIsPressed = true; } else 
+    if ( key == 'a' ) { aIsPressed = true; } else
+    if ( key == 'd' ) { dIsPressed = true; }
+}
+
+void keyReleased() {
+    if ( key == 'w' ) { wIsPressed = false; } else 
+    if ( key == 'a' ) { aIsPressed = false; } else
+    if ( key == 'd' ) { dIsPressed = false; }
+}
