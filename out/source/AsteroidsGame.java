@@ -19,7 +19,7 @@ boolean wIsPressed, aIsPressed, dIsPressed = false;
 
 public void setup() {
     
-    Player.setTopSpeed(10);
+    Player.setTopSpeed(15.0f);
 }
 
 public void draw() {
@@ -203,7 +203,7 @@ class Spaceship extends Floater {
     protected double myTopSpeed;
 
     public Spaceship() {
-        myTopSpeed = 20.0f;
+        myTopSpeed = 10.0f;
         corners = 4;
         int[] xS = {-8, 16, -8, -2};
         int[] yS = {-8, 0, 8, 0};
