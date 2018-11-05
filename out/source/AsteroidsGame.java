@@ -20,55 +20,62 @@ boolean wIsPressed, aIsPressed, dIsPressed = false;
 public void setup() {
     
     Player.setTopSpeed(15.0f);
+    Player.setColor(0,0,0);
 }
 
 public void draw() {
-    background(255);
+    noStroke();
+    translate(0, 0);
+    fill(255, 255, 255, 200);
+    rect(0, 0, width, height);
     Player.show();
     Player.move();
     accelerate();
 }
 
 public void accelerate() {
-    // DEBUG
-    for(int i = 0; i < 5; i++) {System.out.println("");}
-    System.out.println("angle (radians): " + Player.getPointDirection()*(Math.PI/180)); // angle (radians)
+    double playerAngle = Player.getPointDirection()*(Math.PI/180);
+    // debug stuff
+    for(int i = 0; i < 6; i++) {System.out.println("");}
+    System.out.println("angle (radians): " + playerAngle); // angle (radians)
     System.out.println("max x: " + Player.getTopSpeedX() + ",  max y: " + Player.getTopSpeedY()); // converted top speeds
     System.out.println("speed x: " + Player.getDirectionX() + ",  speed y: " + Player.getDirectionY()); // actual speeds
     
-    
     // angles cannot go over 2PI radians
-    if (Player.myPointDirection*(Math.PI/180) > Math.PI*2) {
+    if (playerAngle > Math.PI*2) {
         Player.setPointDirection(0);
     }
-    if (Player.myPointDirection*(Math.PI/180) < -Math.PI*2) {
+    if (playerAngle < -Math.PI*2) {
         Player.setPointDirection(0);
     }
     
+    // turn
     if (aIsPressed) { Player.turn(-5); }
     if (dIsPressed) { Player.turn(5); }
     
+    // accel and deccel
     if (wIsPressed) {
-        if (((Player.getPointDirection()*(Math.PI/180)) < Math.PI/2 && (Player.getPointDirection()*(Math.PI/180)) > -Math.PI/2) || 
-            ((Player.getPointDirection()*(Math.PI/180)) < 2*Math.PI && (Player.getPointDirection()*(Math.PI/180)) > (3*Math.PI)/2)) {
+        if (playerAngle < Math.PI/2 && playerAngle > -Math.PI/2 || 
+            playerAngle < 2*Math.PI && playerAngle > 3*Math.PI/2 ||
+            playerAngle < -3*Math.PI/2 && playerAngle > -2*Math.PI) {
             if (Player.getDirectionX() < Player.getTopSpeedX()) {
                 Player.accelerate(0.15f, "x");
             }
         }
-        if (((Player.getPointDirection()*(Math.PI/180)) < 3*Math.PI/2 && (Player.getPointDirection()*(Math.PI/180)) > Math.PI/2) || 
-            ((Player.getPointDirection()*(Math.PI/180)) < -Math.PI/2 && (Player.getPointDirection()*(Math.PI/180)) > -Math.PI)) {
+        if (playerAngle < 3*Math.PI/2 && playerAngle > Math.PI/2 || 
+            playerAngle < -Math.PI/2 && playerAngle > -3*Math.PI/2) {
             if (Player.getDirectionX() > -Player.getTopSpeedX()) {
                 Player.accelerate(0.15f, "x");
             }
         }
-        if (((Player.getPointDirection()*(Math.PI/180)) > Math.PI && (Player.getPointDirection()*(Math.PI/180)) < 2*Math.PI) ||
-            ((Player.getPointDirection()*(Math.PI/180)) > -Math.PI && (Player.getPointDirection()*(Math.PI/180)) < 0)) {
+        if (playerAngle > Math.PI && playerAngle < 2*Math.PI ||
+            playerAngle > -Math.PI && playerAngle < 0) {
             if (Player.getDirectionY() > -Player.getTopSpeedY()) {
                 Player.accelerate(0.15f, "y");
             }
         }
-        if (((Player.getPointDirection()*(Math.PI/180)) > 0 && (Player.getPointDirection()*(Math.PI/180)) < Math.PI) ||
-            ((Player.getPointDirection()*(Math.PI/180)) > -2*Math.PI && (Player.getPointDirection()*(Math.PI/180)) < -Math.PI)) {
+        if (playerAngle > 0 && playerAngle < Math.PI ||
+            playerAngle > -2*Math.PI && playerAngle < -Math.PI) {
             if (Player.getDirectionY() < Player.getTopSpeedY()) {
                 Player.accelerate(0.15f, "y");
             }
@@ -93,16 +100,17 @@ public void accelerate() {
     }
 }
 
+// keypressed and released stuff
 public void keyPressed() {
-    if ( key == 'w' ) { wIsPressed = true; } else 
-    if ( key == 'a' ) { aIsPressed = true; } else
-    if ( key == 'd' ) { dIsPressed = true; }
+    if ( key == 'w' || keyCode == UP ) { wIsPressed = true; } else 
+    if ( key == 'a' || keyCode == LEFT ) { aIsPressed = true; } else
+    if ( key == 'd' || keyCode == RIGHT ) { dIsPressed = true; }
 }
 
 public void keyReleased() {
-    if ( key == 'w' ) { wIsPressed = false; } else 
-    if ( key == 'a' ) { aIsPressed = false; } else
-    if ( key == 'd' ) { dIsPressed = false; }
+    if ( key == 'w' || keyCode == UP ) { wIsPressed = false; } else 
+    if ( key == 'a' || keyCode == LEFT ) { aIsPressed = false; } else
+    if ( key == 'd' || keyCode == RIGHT ) { dIsPressed = false; }
 }
 abstract class Floater //Do NOT modify the Floater class! Make changes in the Spaceship class 
 {   
@@ -212,6 +220,7 @@ class Spaceship extends Floater {
         yCorners = yS;
     }
     
+    public void setColor(int r, int g, int b) {myColor = color(r, g, b);}  
     public void setX(int x) {myCenterX = x;}  
     public int getX() {return (int)myCenterX;}   
     public void setY(int y) {myCenterY = y;}   
