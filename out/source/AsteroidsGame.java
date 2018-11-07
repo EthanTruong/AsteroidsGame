@@ -81,15 +81,52 @@ public void accelerate() {
             }
         }
     } else if (!wIsPressed) {
-        if (Player.getDirectionX() > 0) {
-            Player.accelerate(-0.25f, "x");
+        /*if (Player.getDirectionX() > 0) {
+            //Player.accelerate(-0.25, "x");
+            Player.setDirectionX(Player.getDirectionX() - 0.25);
         } else if (Player.getDirectionX() < 0) {
-            Player.accelerate(-0.25f , "x2");
+            //Player.accelerate(-0.25 , "x2");
+            Player.setDirectionX(Player.getDirectionX() + 0.25);
         }
         if (Player.getDirectionY() > 0) {
-            Player.accelerate(-0.25f , "y");
+            //Player.accelerate(-0.25 , "y");
+            Player.setDirectionY(Player.getDirectionY() - 0.25);
         } else if (Player.getDirectionY() < 0) {
-            Player.accelerate(0.25f , "y2");
+            //Player.accelerate(0.25 , "y2");
+            Player.setDirectionY(Player.getDirectionY() + 0.25);
+        }*/
+        if (playerAngle < Math.PI/2 && playerAngle > -Math.PI/2 || 
+            playerAngle < 2*Math.PI && playerAngle > 3*Math.PI/2 ||
+            playerAngle < -3*Math.PI/2 && playerAngle > -2*Math.PI) {
+            if (Player.getDirectionX() > 0) {
+                Player.accelerate(-0.25f, "x");
+            } else if (Player.getDirectionX() < 0) {
+                Player.accelerate(0.25f , "x2");
+            }
+        }
+        if (playerAngle < 3*Math.PI/2 && playerAngle > Math.PI/2 || 
+            playerAngle < -Math.PI/2 && playerAngle > -3*Math.PI/2) {
+            if (Player.getDirectionX() < 0) {
+                Player.accelerate(0.25f , "x2");
+            } else if (Player.getDirectionX() > 0) {
+                Player.accelerate(-0.25f, "x");
+            }
+        }
+        if (playerAngle > Math.PI && playerAngle < 2*Math.PI ||
+            playerAngle > -Math.PI && playerAngle < 0) {
+            if (Player.getDirectionY() > 0) {
+                Player.accelerate(-0.25f , "y");
+            } else if (Player.getDirectionY() < 0) {
+                Player.accelerate(0.25f , "y2");
+            }
+        }
+        if (playerAngle > 0 && playerAngle < Math.PI ||
+            playerAngle > -2*Math.PI && playerAngle < -Math.PI) {
+            if (Player.getDirectionY() < 0) {
+                Player.accelerate(0.25f , "y2");
+            } else if (Player.getDirectionY() > 0) {
+                Player.accelerate(-0.25f , "y");
+            }
         }
         if (Player.getDirectionY() > -0.2f && Player.getDirectionY() < 0.2f) {
             Player.setDirectionY(0);
