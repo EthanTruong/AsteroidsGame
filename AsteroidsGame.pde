@@ -4,11 +4,11 @@ boolean wIsPressed, aIsPressed, dIsPressed = false;
 public void setup() {
     size(500, 500);
     Player.setmaxSpeed(15.0);
-    Player.setColor(0,0,0);
+    Player.setColor(235,235,235);
 }
 
 public void draw() {
-    background(255);
+    background(10);
     Player.show();
     Player.move();
     accelerate();

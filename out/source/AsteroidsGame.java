@@ -19,12 +19,12 @@ boolean wIsPressed, aIsPressed, dIsPressed = false;
 
 public void setup() {
     
-    Player.setmaxSpeed(12.0f);
-    Player.setColor(0,0,0);
+    Player.setmaxSpeed(15.0f);
+    Player.setColor(235,235,235);
 }
 
 public void draw() {
-    background(255);
+    background(10);
     Player.show();
     Player.move();
     accelerate();
@@ -213,7 +213,7 @@ class Spaceship extends Floater {
     public Spaceship() {
         myMaxSpeed = 10.0f;
         corners = 4;
-        int[] xS = {-8, 16, -8, -2};
+        int[] xS = {-8, 12, -8, -2};
         int[] yS = {-8, 0, 8, 0};
         xCorners = xS;
         yCorners = yS;
