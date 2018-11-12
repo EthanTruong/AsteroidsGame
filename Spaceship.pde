@@ -1,8 +1,8 @@
 class Spaceship extends Floater { 
-    protected double myTopSpeed;
+    protected double myMaxSpeed;
 
     public Spaceship() {
-        myTopSpeed = 10.0;
+        myMaxSpeed = 10.0;
         corners = 4;
         int[] xS = {-8, 16, -8, -2};
         int[] yS = {-8, 0, 8, 0};
@@ -21,7 +21,7 @@ class Spaceship extends Floater {
     public double getDirectionY() {return myDirectionY;}
     public void setPointDirection(int degrees) {myPointDirection = degrees;}   
     public double getPointDirection() {return myPointDirection;}
-    public void setTopSpeed(double topSpeed) {myTopSpeed = topSpeed;}
-    public double getTopSpeedX() {return abs((float)(myTopSpeed * Math.cos(myPointDirection*(Math.PI/180))));}
-    public double getTopSpeedY() {return abs((float)(myTopSpeed * Math.sin(myPointDirection*(Math.PI/180))));}
+    public void setmaxSpeed(double maxSpeed) {myMaxSpeed = maxSpeed;}
+    public double getmaxSpeedX() {return abs((float)(myMaxSpeed * Math.cos(myPointDirection*(Math.PI/180))));}
+    public double getmaxSpeedY() {return abs((float)(myMaxSpeed * Math.sin(myPointDirection*(Math.PI/180))));}
 }
