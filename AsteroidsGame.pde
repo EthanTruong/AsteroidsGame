@@ -1,7 +1,7 @@
-public static final int ACCELERATION_AMOUNT = 0.15;
-public static final int DECCELERATION_AMOUNT = 0.25;
-public static final int ROUNDING_AMOUNT = 0.25;
-public static final int CORRECTION_SPEED = 0.15;
+public static final float ACCELERATION_AMOUNT = 0.15;
+public static final float DECCELERATION_AMOUNT = 0.25;
+public static final float ROUNDING_AMOUNT = 0.25;
+public static final float CORRECTION_SPEED = 0.15;
 
 Spaceship Player = new Spaceship();
 boolean wIsPressed, aIsPressed, dIsPressed = false;

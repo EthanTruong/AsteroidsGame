@@ -14,6 +14,11 @@ import java.io.IOException;
 
 public class AsteroidsGame extends PApplet {
 
+public static final float ACCELERATION_AMOUNT = 0.15f;
+public static final float DECCELERATION_AMOUNT = 0.25f;
+public static final float ROUNDING_AMOUNT = 0.25f;
+public static final float CORRECTION_SPEED = 0.15f;
+
 Spaceship Player = new Spaceship();
 boolean wIsPressed, aIsPressed, dIsPressed = false;
 
@@ -57,38 +62,40 @@ public void accelerate() {
     if (wIsPressed) { 
         // based on angle, accelerate in the correct direction
         if (playerAngle < Math.PI/2 && playerAngle > -Math.PI/2 || 
-            playerAngle < 2*Math.PI && playerAngle > 3*Math.PI/2 ||
-            playerAngle < -3*Math.PI/2 && playerAngle > -2*Math.PI) {
+        playerAngle < 2*Math.PI && playerAngle > 3*Math.PI/2 ||
+        playerAngle < -3*Math.PI/2 && playerAngle > -2*Math.PI) {
             if (Player.getDirectionX() < Player.getMaxSpeedX()) {
-                Player.accelerate(0.15f, "x");
+                Player.accelerate(ACCELERATION_AMOUNT, "x");
             }
         }
         if (playerAngle < 3*Math.PI/2 && playerAngle > Math.PI/2 || 
-            playerAngle < -Math.PI/2 && playerAngle > -3*Math.PI/2) {
+        playerAngle < -Math.PI/2 && playerAngle > -3*Math.PI/2) {
             if (Player.getDirectionX() > -Player.getMaxSpeedX()) {
-                Player.accelerate(0.15f, "x");
+                Player.accelerate(ACCELERATION_AMOUNT, "x");
             }
         }
         if (playerAngle > Math.PI && playerAngle < 2*Math.PI ||
-            playerAngle > -Math.PI && playerAngle < 0) {
+        playerAngle > -Math.PI && playerAngle < 0) {
             if (Player.getDirectionY() > -Player.getMaxSpeedY()) {
-                Player.accelerate(0.15f, "y");
+                Player.accelerate(ACCELERATION_AMOUNT, "y");
             }
         }
         if (playerAngle > 0 && playerAngle < Math.PI ||
-            playerAngle > -2*Math.PI && playerAngle < -Math.PI) {
+        playerAngle > -2*Math.PI && playerAngle < -Math.PI) {
             if (Player.getDirectionY() < Player.getMaxSpeedY()) {
-                Player.accelerate(0.15f, "y");
+                Player.accelerate(ACCELERATION_AMOUNT, "y");
             }
         }
         // check for overspeed + rounding
-        if(abs((float)Player.getDirectionX()) > Player.getMaxSpeedX()) {
+        if(abs((float)Player.getDirectionX()) > Player.getMaxSpeedX()) { // correct directionX to maxSpeed
             if (Player.getDirectionX() > 0) {
-                Player.setDirectionX(Player.getDirectionX() - 0.15f);
+                Player.setDirectionX(Player.getDirectionX() - CORRECTION_SPEED);
             } else if (Player.getDirectionX() < 0) {
-                Player.setDirectionX(Player.getDirectionX() + 0.15f);
+                Player.setDirectionX(Player.getDirectionX() + CORRECTION_SPEED);
             }
-            if(abs((float)Player.getDirectionX()) > Player.getMaxSpeedX()-0.25f && abs((float)Player.getDirectionX()) < Player.getMaxSpeedX()+0.25f) {
+            // round directionX to max speed
+            if(abs((float)Player.getDirectionX()) > Player.getMaxSpeedX()-ROUNDING_AMOUNT && 
+            abs((float)Player.getDirectionX()) < Player.getMaxSpeedX()+ROUNDING_AMOUNT) {
                 if (Player.getDirectionX() > 0) {
                     Player.setDirectionX(Player.getMaxSpeedX());
                 } else if (Player.getDirectionX() < 0) {
@@ -96,13 +103,15 @@ public void accelerate() {
                 }
             }
         }
-        if(abs((float)Player.getDirectionY()) > Player.getMaxSpeedY()) {
+        if(abs((float)Player.getDirectionY()) > Player.getMaxSpeedY()) { // correct directionY to maxSpeed
             if (Player.getDirectionY() > 0) {
-                Player.setDirectionY(Player.getDirectionY() - 0.15f);
+                Player.setDirectionY(Player.getDirectionY() - CORRECTION_SPEED);
             } else if (Player.getDirectionY() < 0) {
-                Player.setDirectionY(Player.getDirectionY() + 0.15f);
+                Player.setDirectionY(Player.getDirectionY() + CORRECTION_SPEED);
             }
-            if(abs((float)Player.getDirectionY()) > Player.getMaxSpeedY()-0.25f && abs((float)Player.getDirectionY()) < Player.getMaxSpeedY()+0.25f) {
+            // round directionY to max speed
+            if(abs((float)Player.getDirectionY()) > Player.getMaxSpeedY()-ROUNDING_AMOUNT && 
+            abs((float)Player.getDirectionY()) < Player.getMaxSpeedY()+ROUNDING_AMOUNT) {
                 if (Player.getDirectionY() > 0) {
                     Player.setDirectionY(Player.getMaxSpeedY());
                 } else if (Player.getDirectionX() < 0) {
@@ -111,12 +120,12 @@ public void accelerate() {
             }
         }
     } else if (!wIsPressed) {
-        Player.decelerate(0.25f); // deccelerate player
+        Player.decelerate(DECCELERATION_AMOUNT); // deccelerate player
         // round speed to 0
-        if (Player.getDirectionX() > -0.25f && Player.getDirectionX() < 0.25f) {
+        if (Player.getDirectionX() > -ROUNDING_AMOUNT && Player.getDirectionX() < ROUNDING_AMOUNT) {
             Player.setDirectionX(0);
         }
-        if (Player.getDirectionY() > -0.25f && Player.getDirectionY() < 0.25f) {
+        if (Player.getDirectionY() > -ROUNDING_AMOUNT && Player.getDirectionY() < ROUNDING_AMOUNT) {
             Player.setDirectionY(0);
         }
     }
