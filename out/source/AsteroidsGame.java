@@ -35,7 +35,7 @@ public void accelerate() {
     // debug stuff
     for(int i = 0; i < 6; i++) {System.out.println("");}
     System.out.println("angle (radians): " + playerAngle); // angle (radians)
-    System.out.println("max x: " + Player.getmaxSpeedX() + ",  max y: " + Player.getmaxSpeedY()); // converted top speeds
+    System.out.println("max x: " + Player.getMaxSpeedX() + ",  max y: " + Player.getMaxSpeedY()); // converted top speeds
     System.out.println("speed x: " + Player.getDirectionX() + ",  speed y: " + Player.getDirectionY()); // actual speeds
     
     // angles cannot go over 2PI radians
@@ -56,26 +56,54 @@ public void accelerate() {
         if (playerAngle < Math.PI/2 && playerAngle > -Math.PI/2 || 
             playerAngle < 2*Math.PI && playerAngle > 3*Math.PI/2 ||
             playerAngle < -3*Math.PI/2 && playerAngle > -2*Math.PI) {
-            if (Player.getDirectionX() < Player.getmaxSpeedX()) {
+            if (Player.getDirectionX() < Player.getMaxSpeedX()) {
                 Player.accelerate(0.15f, "x");
             }
         }
         if (playerAngle < 3*Math.PI/2 && playerAngle > Math.PI/2 || 
             playerAngle < -Math.PI/2 && playerAngle > -3*Math.PI/2) {
-            if (Player.getDirectionX() > -Player.getmaxSpeedX()) {
+            if (Player.getDirectionX() > -Player.getMaxSpeedX()) {
                 Player.accelerate(0.15f, "x");
             }
         }
         if (playerAngle > Math.PI && playerAngle < 2*Math.PI ||
             playerAngle > -Math.PI && playerAngle < 0) {
-            if (Player.getDirectionY() > -Player.getmaxSpeedY()) {
+            if (Player.getDirectionY() > -Player.getMaxSpeedY()) {
                 Player.accelerate(0.15f, "y");
             }
         }
         if (playerAngle > 0 && playerAngle < Math.PI ||
             playerAngle > -2*Math.PI && playerAngle < -Math.PI) {
-            if (Player.getDirectionY() < Player.getmaxSpeedY()) {
+            if (Player.getDirectionY() < Player.getMaxSpeedY()) {
                 Player.accelerate(0.15f, "y");
+            }
+        }
+        if(abs((float)Player.getDirectionX()) > Player.getMaxSpeedX()) {
+            if (Player.getDirectionX() > 0) {
+                Player.setDirectionX(Player.getDirectionX() - 0.1f);
+            } else if (Player.getDirectionX() < 0) {
+                Player.setDirectionX(Player.getDirectionX() + 0.1f);
+            }
+            if(abs((float)Player.getDirectionX()) > Player.getMaxSpeedX()-0.15f && abs((float)Player.getDirectionX()) < Player.getMaxSpeedX()+0.25f) {
+                if (Player.getDirectionX() > 0) {
+                    Player.setDirectionX(Player.getMaxSpeedX());
+                } else if (Player.getDirectionX() < 0) {
+                    Player.setDirectionX(-Player.getMaxSpeedX());
+                }
+            }
+        }
+        if(abs((float)Player.getDirectionY()) > Player.getMaxSpeedY()) {
+            if (Player.getDirectionY() > 0) {
+                Player.setDirectionY(Player.getDirectionY() - 0.1f);
+            } else if (Player.getDirectionY() < 0) {
+                Player.setDirectionY(Player.getDirectionY() + 0.1f);
+            }
+            if(abs((float)Player.getDirectionY()) > Player.getMaxSpeedY()-0.15f && abs((float)Player.getDirectionY()) < Player.getMaxSpeedY()+0.25f) {
+                if (Player.getDirectionY() > 0) {
+                    Player.setDirectionY(Player.getMaxSpeedY());
+                } else if (Player.getDirectionX() < 0) {
+                    Player.setDirectionY(-Player.getMaxSpeedY());
+                }
             }
         }
     } else if (!wIsPressed) {
@@ -231,8 +259,8 @@ class Spaceship extends Floater {
     public void setPointDirection(int degrees) {myPointDirection = degrees;}   
     public double getPointDirection() {return myPointDirection;}
     public void setmaxSpeed(double maxSpeed) {myMaxSpeed = maxSpeed;}
-    public double getmaxSpeedX() {return abs((float)(myMaxSpeed * Math.cos(myPointDirection*(Math.PI/180))));}
-    public double getmaxSpeedY() {return abs((float)(myMaxSpeed * Math.sin(myPointDirection*(Math.PI/180))));}
+    public double getMaxSpeedX() {return abs((float)(myMaxSpeed * Math.cos(myPointDirection*(Math.PI/180))));}
+    public double getMaxSpeedY() {return abs((float)(myMaxSpeed * Math.sin(myPointDirection*(Math.PI/180))));}
 }
 class Star //note that this class does NOT extend Floater
 {

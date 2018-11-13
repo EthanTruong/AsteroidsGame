@@ -22,6 +22,6 @@ class Spaceship extends Floater {
     public void setPointDirection(int degrees) {myPointDirection = degrees;}   
     public double getPointDirection() {return myPointDirection;}
     public void setmaxSpeed(double maxSpeed) {myMaxSpeed = maxSpeed;}
-    public double getmaxSpeedX() {return abs((float)(myMaxSpeed * Math.cos(myPointDirection*(Math.PI/180))));}
-    public double getmaxSpeedY() {return abs((float)(myMaxSpeed * Math.sin(myPointDirection*(Math.PI/180))));}
+    public double getMaxSpeedX() {return abs((float)(myMaxSpeed * Math.cos(myPointDirection*(Math.PI/180))));}
+    public double getMaxSpeedY() {return abs((float)(myMaxSpeed * Math.sin(myPointDirection*(Math.PI/180))));}
 }
