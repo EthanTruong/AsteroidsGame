@@ -14,13 +14,16 @@ public void draw() {
     accelerate();
 }
 
+// player movement
 public void accelerate() {
     double playerAngle = Player.getPointDirection()*(Math.PI/180);
-    // debug stuff
+    
+    /* debug stuff
     for(int i = 0; i < 6; i++) {System.out.println("");}
     System.out.println("angle (radians): " + playerAngle); // angle (radians)
     System.out.println("max x: " + Player.getMaxSpeedX() + ",  max y: " + Player.getMaxSpeedY()); // converted top speeds
     System.out.println("speed x: " + Player.getDirectionX() + ",  speed y: " + Player.getDirectionY()); // actual speeds
+    */
     
     // angles cannot go over 2PI radians
     if (playerAngle > Math.PI*2) {
