@@ -14,37 +14,57 @@ import java.io.IOException;
 
 public class AsteroidsGame extends PApplet {
 
-public static final float ACCELERATION_AMOUNT = 0.15f;
+public static final float ACCELERATION_AMOUNT = 0.20f;
 public static final float DECCELERATION_AMOUNT = 0.25f;
 public static final float ROUNDING_AMOUNT = 0.25f;
 public static final float CORRECTION_SPEED = 0.15f;
 
+Star[] s;
+
 Spaceship Player = new Spaceship();
 boolean wIsPressed, aIsPressed, dIsPressed = false;
 
+Asteroid Rock = new Asteroid();
+
 public void setup() {
     
-    Player.setmaxSpeed(15.0f);
-    Player.setColor(10,10,10);
+    Player.setmaxSpeed(16.0f);
+    Player.setColor(0,0,0);
+    Player.setX(width/2);
+    Player.setY(height/2);
+    Rock.setX(width/2);
+    Rock.setY(width/2);
+
+    
+    s = new Star[500];
+    for(int i = 0; i < s.length; i++) {
+        s[i] = new Star();
+        s[i].setStroke((float)(Math.random()*2+1));
+    } 
 }
 
 public void draw() {
     background(240);
+    for(int i = 0; i < s.length; i++) {
+        s[i].show();
+    }
     Player.show();
     Player.move();
-    accelerate();
+    Rock.show();
+    Rock.move();
+    movement();
 }
 
 // player movement
-public void accelerate() {
+public void movement() {
     double playerAngle = Player.getPointDirection()*(Math.PI/180);
     
-    // /* debug stuff
+     /* debug stuff
     for(int i = 0; i < 6; i++) {System.out.println("");}
     System.out.println("angle (radians): " + playerAngle); // angle (radians)
     System.out.println("max x: " + Player.getMaxSpeedX() + ",  max y: " + Player.getMaxSpeedY()); // converted top speeds
     System.out.println("speed x: " + Player.getDirectionX() + ",  speed y: " + Player.getDirectionY()); // actual speeds
-    // */
+     */
     
     // angles cannot go over 2PI radians
     if (playerAngle > Math.PI*2) {
@@ -143,6 +163,30 @@ public void keyReleased() {
     if ( key == 'a' || keyCode == LEFT ) { aIsPressed = false; } else
     if ( key == 'd' || keyCode == RIGHT ) { dIsPressed = false; }
 }
+class Asteroid extends Floater {
+    protected int rotationSpeed;
+
+    public Asteroid() {
+        rotationSpeed = (int)(Math.random()*11-5);
+        corners = (int)(Math.random()*4+3);
+        int[] xS = {-8, 12, -8, -2, 12, 0};
+        int[] yS = {-8, 0, 8, 0, -5, 7};
+        xCorners = xS;
+        yCorners = yS;
+    }
+
+    public void setColor(int r, int g, int b) {myColor = color(r, g, b);}  
+    public void setX(int x) {myCenterX = x;}  
+    public int getX() {return (int)myCenterX;}   
+    public void setY(int y) {myCenterY = y;}   
+    public int getY() {return (int)myCenterY;}   
+    public void setDirectionX(double x) {myDirectionX = x;}   
+    public double getDirectionX() {return myDirectionX;}
+    public void setDirectionY(double y) {myDirectionY = y;}
+    public double getDirectionY() {return myDirectionY;}
+    public void setPointDirection(int degrees) {myPointDirection = degrees;}   
+    public double getPointDirection() {return myPointDirection;}
+}
 abstract class Floater { //Do NOT modify the Floater class! Make changes in the Spaceship class 
     protected int corners;  //the number of corners, a triangular floater has 3   
     protected int[] xCorners;   
@@ -226,6 +270,7 @@ abstract class Floater { //Do NOT modify the Floater class! Make changes in the 
     public void show () {  //Draws the floater at the current position            
         fill(myColor);   
         stroke(myColor);    
+        strokeWeight(0);
         
         //translate the (x,y) center of the ship to the correct position
         translate((float)myCenterX, (float)myCenterY);
@@ -275,9 +320,24 @@ class Spaceship extends Floater {
     public double getMaxSpeedX() {return abs((float)(myMaxSpeed * Math.cos(myPointDirection*(Math.PI/180))));}
     public double getMaxSpeedY() {return abs((float)(myMaxSpeed * Math.sin(myPointDirection*(Math.PI/180))));}
 }
-class Star //note that this class does NOT extend Floater
-{
-  //your code here
+class Star { //note that this class does NOT extend Floater
+    private float starX, starY, stroke;
+
+    public Star() {
+        starX = (int)(Math.random()*width+1);
+        starY = (int)(Math.random()*height+1);
+        stroke = 1;
+    }
+
+    public void show() {
+        fill(0,0,0,10);
+        strokeWeight(stroke);
+        point(starX, starY);
+    }
+
+    public void setStroke(float size) {
+        stroke = size;
+    }
 }
   public void settings() {  size(500, 500); }
   static public void main(String[] passedArgs) {

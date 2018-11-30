@@ -81,6 +81,7 @@ abstract class Floater { //Do NOT modify the Floater class! Make changes in the 
     public void show () {  //Draws the floater at the current position            
         fill(myColor);   
         stroke(myColor);    
+        strokeWeight(0);
         
         //translate the (x,y) center of the ship to the correct position
         translate((float)myCenterX, (float)myCenterY);

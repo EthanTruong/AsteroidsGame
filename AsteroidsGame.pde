@@ -1,34 +1,54 @@
-public static final float ACCELERATION_AMOUNT = 0.15;
+public static final float ACCELERATION_AMOUNT = 0.20;
 public static final float DECCELERATION_AMOUNT = 0.25;
 public static final float ROUNDING_AMOUNT = 0.25;
 public static final float CORRECTION_SPEED = 0.15;
 
+Star[] s;
+
 Spaceship Player = new Spaceship();
 boolean wIsPressed, aIsPressed, dIsPressed = false;
 
+Asteroid Rock = new Asteroid();
+
 public void setup() {
     size(500, 500);
-    Player.setmaxSpeed(15.0);
-    Player.setColor(10,10,10);
+    Player.setmaxSpeed(16.0);
+    Player.setColor(0,0,0);
+    Player.setX(width/2);
+    Player.setY(height/2);
+    Rock.setX(width/2);
+    Rock.setY(width/2);
+
+    
+    s = new Star[500];
+    for(int i = 0; i < s.length; i++) {
+        s[i] = new Star();
+        s[i].setStroke((float)(Math.random()*2+1));
+    } 
 }
 
 public void draw() {
     background(240);
+    for(int i = 0; i < s.length; i++) {
+        s[i].show();
+    }
     Player.show();
     Player.move();
-    accelerate();
+    Rock.show();
+    Rock.move();
+    movement();
 }
 
 // player movement
-public void accelerate() {
+public void movement() {
     double playerAngle = Player.getPointDirection()*(Math.PI/180);
     
-    // /* debug stuff
+     /* debug stuff
     for(int i = 0; i < 6; i++) {System.out.println("");}
     System.out.println("angle (radians): " + playerAngle); // angle (radians)
     System.out.println("max x: " + Player.getMaxSpeedX() + ",  max y: " + Player.getMaxSpeedY()); // converted top speeds
     System.out.println("speed x: " + Player.getDirectionX() + ",  speed y: " + Player.getDirectionY()); // actual speeds
-    // */
+     */
     
     // angles cannot go over 2PI radians
     if (playerAngle > Math.PI*2) {
