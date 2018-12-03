@@ -4,8 +4,10 @@ class Asteroid extends Floater {
     public Asteroid() {
         rotationSpeed = (int)(Math.random()*11-5);
         corners = (int)(Math.random()*4+3);
-        int[] xS = {-8, 12, -8, -2, 12, 0};
-        int[] yS = {-8, 0, 8, 0, -5, 7};
+        int[] xS = {(int)myCenterX-(int)(Math.random()*10+5), (int)myCenterX-(int)(Math.random()*13+5), (int)myCenterX-(int)(Math.random()*10+5), 
+                (int)myCenterX+(int)(Math.random()*10+5), (int)myCenterX+(int)(Math.random()*13+5), (int)myCenterX+(int)(Math.random()*10+5)};
+        int[] yS = {(int)myCenterY-(int)(Math.random()*12+5), (int)myCenterY, (int)myCenterY+(int)(Math.random()*12+5),
+                (int)myCenterY+(int)(Math.random()*12+5), (int)myCenterY, (int)myCenterY-(int)(Math.random()*12+5)}; 
         xCorners = xS;
         yCorners = yS;
     }
