@@ -6,9 +6,10 @@ public static final float CORRECTION_SPEED = 0.15;
 Star[] s;
 
 Spaceship Player = new Spaceship();
-boolean wIsPressed, aIsPressed, dIsPressed = false;
+boolean wIsPressed, aIsPressed, dIsPressed, zIsPressed = false;
+boolean canPress = true;
 
-Asteroid Rock = new Asteroid();
+Asteroid[] r;
 
 public void setup() {
     size(500, 500);
@@ -16,10 +17,16 @@ public void setup() {
     Player.setColor(0,0,0);
     Player.setX(width/2);
     Player.setY(height/2);
-    Rock.setX(width/2);
-    Rock.setY(width/2);
 
-    
+    r = new Asteroid[(int)(Math.random()*10+15)];
+    for(int i = 0; i < r.length; i++) {
+        r[i] = new Asteroid();
+        r[i].setX((int)(Math.random()*width));
+        r[i].setY((int)(Math.random()*height));
+        r[i].setDirectionX((Math.random()*10-5)/5);
+        r[i].setDirectionY((Math.random()*10-5)/5);
+    } 
+
     s = new Star[500];
     for(int i = 0; i < s.length; i++) {
         s[i] = new Star();
@@ -32,11 +39,20 @@ public void draw() {
     for(int i = 0; i < s.length; i++) {
         s[i].show();
     }
+    for(int i = 0; i < r.length; i++) {
+        r[i].show();
+        r[i].move();
+    } 
     Player.show();
     Player.move();
-    Rock.show();
-    Rock.move();
     movement();
+
+    if (zIsPressed && canPress) {
+        Player.setX((int)(Math.random()*width));
+        Player.setY((int)(Math.random()*height));
+        Player.turn((int)(Math.random()*361));
+        canPress = false;
+    }
 }
 
 // player movement
@@ -139,11 +155,18 @@ public void movement() {
 void keyPressed() {
     if ( key == 'w' || keyCode == UP ) { wIsPressed = true; } else 
     if ( key == 'a' || keyCode == LEFT ) { aIsPressed = true; } else
-    if ( key == 'd' || keyCode == RIGHT ) { dIsPressed = true; }
+    if ( key == 'd' || keyCode == RIGHT ) { dIsPressed = true; } else
+    if ( key == 'z' ) { 
+        zIsPressed = true; 
+    }
 }
 
 void keyReleased() {
     if ( key == 'w' || keyCode == UP ) { wIsPressed = false; } else 
     if ( key == 'a' || keyCode == LEFT ) { aIsPressed = false; } else
-    if ( key == 'd' || keyCode == RIGHT ) { dIsPressed = false; }
+    if ( key == 'd' || keyCode == RIGHT ) { dIsPressed = false; } else
+    if ( key == 'z' ) { 
+        zIsPressed = false;  
+        canPress = true;
+    }
 }
