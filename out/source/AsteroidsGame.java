@@ -19,13 +19,12 @@ public static final float DECCELERATION_AMOUNT = 0.25f;
 public static final float ROUNDING_AMOUNT = 0.25f;
 public static final float CORRECTION_SPEED = 0.15f;
 
+ArrayList <Asteroid> r;
 Star[] s;
 
 Spaceship Player = new Spaceship();
 boolean wIsPressed, aIsPressed, dIsPressed, zIsPressed = false;
 boolean canPress = true;
-
-Asteroid[] r;
 
 public void setup() {
     
@@ -34,8 +33,8 @@ public void setup() {
     Player.setX(width/2);
     Player.setY(height/2);
 
-    r = new Asteroid[(int)(Math.random()*10+15)];
-    for(int i = 0; i < r.length; i++) {
+    r = new ArrayList <Asteroid>((int)(Math.random()*10+15));
+    for(int i = 0; i < r.size(); i++) {
         r[i] = new Asteroid();
         r[i].setX((int)(Math.random()*width));
         r[i].setY((int)(Math.random()*height));
@@ -55,9 +54,10 @@ public void draw() {
     for(int i = 0; i < s.length; i++) {
         s[i].show();
     }
-    for(int i = 0; i < r.length; i++) {
+    for(int i = 0; i < r.size(); i++) {
         r[i].show();
         r[i].move();
+        r[i].turn(r[i].getRotationSpeed());
     } 
     Player.show();
     Player.move();
@@ -190,7 +190,7 @@ class Asteroid extends Floater {
     protected int rotationSpeed;
 
     public Asteroid() {
-        rotationSpeed = (int)(Math.random()*11-5);
+        rotationSpeed = (int)(Math.random()*4-3);
         corners = 6; //(int)(Math.random()*4+3);
         int[] xS = {(int)myCenterX-(int)(Math.random()*10+5), (int)myCenterX-(int)(Math.random()*13+5), (int)myCenterX-(int)(Math.random()*10+5), 
                 (int)myCenterX+(int)(Math.random()*10+5), (int)myCenterX+(int)(Math.random()*13+5), (int)myCenterX+(int)(Math.random()*10+5)};
@@ -211,6 +211,7 @@ class Asteroid extends Floater {
     public double getDirectionY() {return myDirectionY;}
     public void setPointDirection(int degrees) {myPointDirection = degrees;}   
     public double getPointDirection() {return myPointDirection;}
+    public int getRotationSpeed() {return rotationSpeed;}
 }
 abstract class Floater { //Do NOT modify the Floater class! Make changes in the Spaceship class 
     protected int corners;  //the number of corners, a triangular floater has 3   

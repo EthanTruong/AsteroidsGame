@@ -3,13 +3,12 @@ public static final float DECCELERATION_AMOUNT = 0.25;
 public static final float ROUNDING_AMOUNT = 0.25;
 public static final float CORRECTION_SPEED = 0.15;
 
+ArrayList <Asteroid> r;
 Star[] s;
 
 Spaceship Player = new Spaceship();
 boolean wIsPressed, aIsPressed, dIsPressed, zIsPressed = false;
 boolean canPress = true;
-
-Asteroid[] r;
 
 public void setup() {
     size(500, 500);
@@ -18,8 +17,8 @@ public void setup() {
     Player.setX(width/2);
     Player.setY(height/2);
 
-    r = new Asteroid[(int)(Math.random()*10+15)];
-    for(int i = 0; i < r.length; i++) {
+    r = new ArrayList <Asteroid>((int)(Math.random()*10+15));
+    for(int i = 0; i < r.size(); i++) {
         r[i] = new Asteroid();
         r[i].setX((int)(Math.random()*width));
         r[i].setY((int)(Math.random()*height));
@@ -39,9 +38,10 @@ public void draw() {
     for(int i = 0; i < s.length; i++) {
         s[i].show();
     }
-    for(int i = 0; i < r.length; i++) {
+    for(int i = 0; i < r.size(); i++) {
         r[i].show();
         r[i].move();
+        r[i].turn(r[i].getRotationSpeed());
     } 
     Player.show();
     Player.move();
