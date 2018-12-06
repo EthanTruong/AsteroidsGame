@@ -19,7 +19,7 @@ public static final float DECCELERATION_AMOUNT = 0.25f;
 public static final float ROUNDING_AMOUNT = 0.25f;
 public static final float CORRECTION_SPEED = 0.15f;
 
-ArrayList <Asteroid> r;
+ArrayList <Asteroid> r = new ArrayList <Asteroid>();
 Star[] s;
 
 Spaceship Player = new Spaceship();
@@ -33,13 +33,8 @@ public void setup() {
     Player.setX(width/2);
     Player.setY(height/2);
 
-    r = new ArrayList <Asteroid>((int)(Math.random()*10+15));
-    for(int i = 0; i < r.size(); i++) {
-        r[i] = new Asteroid();
-        r[i].setX((int)(Math.random()*width));
-        r[i].setY((int)(Math.random()*height));
-        r[i].setDirectionX((Math.random()*10-5)/5);
-        r[i].setDirectionY((Math.random()*10-5)/5);
+    for(int i = 0; i < (int)(Math.random()*10+15); i++) {
+        r.add(new Asteroid());
     } 
 
     s = new Star[500];
@@ -54,11 +49,11 @@ public void draw() {
     for(int i = 0; i < s.length; i++) {
         s[i].show();
     }
-    for(int i = 0; i < r.size(); i++) {
-        r[i].show();
-        r[i].move();
-        r[i].turn(r[i].getRotationSpeed());
-    } 
+    for(Asteroid entry : r) {
+        entry.show();
+        entry.move();
+        entry.turn(entry.getRotationSpeed());
+    }
     Player.show();
     Player.move();
     movement();
@@ -188,8 +183,10 @@ public void keyReleased() {
 }
 class Asteroid extends Floater {
     protected int rotationSpeed;
+    protected int warpOvervalue;
 
     public Asteroid() {
+        warpOvervalue = 20;
         rotationSpeed = (int)(Math.random()*4-3);
         corners = 6; //(int)(Math.random()*4+3);
         int[] xS = {(int)myCenterX-(int)(Math.random()*10+5), (int)myCenterX-(int)(Math.random()*13+5), (int)myCenterX-(int)(Math.random()*10+5), 
@@ -198,7 +195,30 @@ class Asteroid extends Floater {
                 (int)myCenterY+(int)(Math.random()*12+5), (int)myCenterY, (int)myCenterY-(int)(Math.random()*12+5)}; 
         xCorners = xS;
         yCorners = yS;
+        myCenterX = (int)(Math.random()*width);
+        myCenterY = (int)(Math.random()*height);
+        myDirectionX = (Math.random()*10-5)/5;
+        myDirectionY = (Math.random()*10-5)/5;
     }
+    
+    public void move () { //move the floater in the current direction of travel
+        //change the x and y coordinates by myDirectionX and myDirectionY       
+        myCenterX += myDirectionX;    
+        myCenterY += myDirectionY;     
+
+        //wrap around screen    
+        if(myCenterX > width + warpOvervalue) {     
+            myCenterX = 0 - warpOvervalue;    
+        } else if (myCenterX < 0 - warpOvervalue) {     
+            myCenterX = width + warpOvervalue;    
+        }    
+        
+        if(myCenterY > height + warpOvervalue) {    
+          myCenterY = 0 - warpOvervalue;    
+        } else if (myCenterY < 0 - warpOvervalue){     
+          myCenterY = height + warpOvervalue;    
+        }   
+    }   
 
     public void setColor(int r, int g, int b) {myColor = color(r, g, b);}  
     public void setX(int x) {myCenterX = x;}  
