@@ -19,12 +19,14 @@ public static final float DECCELERATION_AMOUNT = 0.25f;
 public static final float ROUNDING_AMOUNT = 0.25f;
 public static final float CORRECTION_SPEED = 0.15f;
 
-ArrayList <Asteroid> r = new ArrayList <Asteroid>();
+ArrayList <Asteroid> r = new ArrayList <Asteroid> ();
+ArrayList <Bullet> b = new ArrayList <Bullet> ();
 Star[] s;
 
 Spaceship Player = new Spaceship();
 boolean wIsPressed, aIsPressed, dIsPressed, zIsPressed = false;
-boolean canPress = true;
+boolean canPressZ = true;
+boolean canPressSpace = true;
 
 public void setup() {
     
@@ -33,15 +35,15 @@ public void setup() {
     Player.setX(width/2);
     Player.setY(height/2);
 
-    for(int i = 0; i < (int)(Math.random()*10+15); i++) {
+    for(int i = 0; i < (int)(Math.random()*20+25); i++) {
         r.add(new Asteroid());
-    } 
+    }  
 
     s = new Star[500];
     for(int i = 0; i < s.length; i++) {
         s[i] = new Star();
         s[i].setStroke((float)(Math.random()*2+1));
-    } 
+    }
 }
 
 public void draw() {
@@ -53,16 +55,24 @@ public void draw() {
         entry.show();
         entry.move();
         entry.turn(entry.getRotationSpeed());
+        
     }
     Player.show();
     Player.move();
     movement();
 
-    if (zIsPressed && canPress) {
+    for(int i = 0; i < r.size(); i++) {
+        if (dist(Player.getX(), Player.getY(), r.get(i).getX(), r.get(i).getY()) < 12) {
+            r.remove(i);
+            i--;
+        }
+    }
+
+    if (zIsPressed && canPressZ) {
         Player.setX((int)(Math.random()*width));
         Player.setY((int)(Math.random()*height));
         Player.turn((int)(Math.random()*361));
-        canPress = false;
+        canPressZ = false;
     }
 }
 
@@ -164,7 +174,7 @@ public void movement() {
 
 // keypressed and released stuff
 public void keyPressed() {
-    if ( key == 'w' || keyCode == UP ) { wIsPressed = true; } else 
+    if ( key == SPACE || keyCode == UP ) { wIsPressed = true; } else 
     if ( key == 'a' || keyCode == LEFT ) { aIsPressed = true; } else
     if ( key == 'd' || keyCode == RIGHT ) { dIsPressed = true; } else
     if ( key == 'z' ) { 
@@ -173,12 +183,12 @@ public void keyPressed() {
 }
 
 public void keyReleased() {
-    if ( key == 'w' || keyCode == UP ) { wIsPressed = false; } else 
+    if ( key == SPACE || keyCode == UP ) { wIsPressed = false; } else 
     if ( key == 'a' || keyCode == LEFT ) { aIsPressed = false; } else
     if ( key == 'd' || keyCode == RIGHT ) { dIsPressed = false; } else
     if ( key == 'z' ) { 
         zIsPressed = false;  
-        canPress = true;
+        canPressZ = true;
     }
 }
 class Asteroid extends Floater {
@@ -233,6 +243,28 @@ class Asteroid extends Floater {
     public double getPointDirection() {return myPointDirection;}
     public int getRotationSpeed() {return rotationSpeed;}
 }
+class Bullet extends Floater {
+
+    public Bullet() {
+        corners = 6; //(int)(Math.random()*4+3);
+        int[] xS = {1, 0, -1, -1, 0, 1};
+        int[] yS = {3, 4, 3, -3, -4, -3}; 
+        xCorners = xS;
+        yCorners = yS;
+    }
+
+    public void setColor(int r, int g, int b) {myColor = color(r, g, b);}  
+    public void setX(int x) {myCenterX = x;}  
+    public int getX() {return (int)myCenterX;}   
+    public void setY(int y) {myCenterY = y;}   
+    public int getY() {return (int)myCenterY;}   
+    public void setDirectionX(double x) {myDirectionX = x;}   
+    public double getDirectionX() {return myDirectionX;}
+    public void setDirectionY(double y) {myDirectionY = y;}
+    public double getDirectionY() {return myDirectionY;}
+    public void setPointDirection(int degrees) {myPointDirection = degrees;}   
+    public double getPointDirection() {return myPointDirection;}
+}
 abstract class Floater { //Do NOT modify the Floater class! Make changes in the Spaceship class 
     protected int corners;  //the number of corners, a triangular floater has 3   
     protected int[] xCorners;   
@@ -253,41 +285,13 @@ abstract class Floater { //Do NOT modify the Floater class! Make changes in the 
     abstract public double getPointDirection(); 
 
     //Accelerates the floater in the direction it is pointing (myPointDirection)   
-    public void accelerate (double dAmount, String direction) {          
+    public void accelerate (double dAmount) {          
         //convert the current direction the floater is pointing to radians    
         double dRadians = myPointDirection*(Math.PI/180);
         //change coordinates of direction of travel
-        if (direction == "x") {
             myDirectionX += ((dAmount) * Math.cos(dRadians));
-        }
-        if (direction == "y") {
             myDirectionY += ((dAmount) * Math.sin(dRadians)); 
-        }   
     } 
-
-    //Deccelerates the floater from xDirection and yDirection
-    public void decelerate (double dAmount) {          
-        //convert the current direction the floater is pointing to radians    
-        double dRadians = myPointDirection*(Math.PI/180);
-
-        // convert movement into angle
-        double getAngleX = Math.acos(abs((float)(myDirectionX / Math.sqrt(Math.pow((float)myDirectionY,2) + Math.pow((float)myDirectionX,2)))));
-        double getAngleY = Math.asin(abs((float)(myDirectionY / Math.sqrt(Math.pow((float)myDirectionY,2) + Math.pow((float)myDirectionX,2)))));
-
-        //change coordinates of direction of travel
-        if (myDirectionX < 0) {
-            myDirectionX += dAmount * Math.cos(getAngleX);
-        } 
-        if (myDirectionX > 0) {
-            myDirectionX -= dAmount * Math.cos(getAngleX);
-        }
-        if (myDirectionY < 0) {
-            myDirectionY += dAmount * Math.sin(getAngleY);
-        }
-        if (myDirectionY > 0) {
-            myDirectionY -= dAmount * Math.sin(getAngleY);
-        }
-    }  
 
     public void turn (int nDegreesOfRotation)   {     
         //rotates the floater by a given number of degrees    
@@ -350,6 +354,42 @@ class Spaceship extends Floater {
         xCorners = xS;
         yCorners = yS;
     }
+
+    public void accelerate (double dAmount, String direction) {          
+        //convert the current direction the floater is pointing to radians    
+        double dRadians = myPointDirection*(Math.PI/180);
+        //change coordinates of direction of travel
+        if (direction == "x") {
+            myDirectionX += ((dAmount) * Math.cos(dRadians));
+        }
+        if (direction == "y") {
+            myDirectionY += ((dAmount) * Math.sin(dRadians)); 
+        }   
+    } 
+
+    //Deccelerates the floater from xDirection and yDirection
+    public void decelerate (double dAmount) {          
+        //convert the current direction the floater is pointing to radians    
+        double dRadians = myPointDirection*(Math.PI/180);
+
+        // convert movement into angle
+        double getAngleX = Math.acos(abs((float)(myDirectionX / Math.sqrt(Math.pow((float)myDirectionY,2) + Math.pow((float)myDirectionX,2)))));
+        double getAngleY = Math.asin(abs((float)(myDirectionY / Math.sqrt(Math.pow((float)myDirectionY,2) + Math.pow((float)myDirectionX,2)))));
+
+        //change coordinates of direction of travel
+        if (myDirectionX < 0) {
+            myDirectionX += dAmount * Math.cos(getAngleX);
+        } 
+        if (myDirectionX > 0) {
+            myDirectionX -= dAmount * Math.cos(getAngleX);
+        }
+        if (myDirectionY < 0) {
+            myDirectionY += dAmount * Math.sin(getAngleY);
+        }
+        if (myDirectionY > 0) {
+            myDirectionY -= dAmount * Math.sin(getAngleY);
+        }
+    }  
     
     public void setColor(int r, int g, int b) {myColor = color(r, g, b);}  
     public void setX(int x) {myCenterX = x;}  

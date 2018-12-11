@@ -18,41 +18,13 @@ abstract class Floater { //Do NOT modify the Floater class! Make changes in the 
     abstract public double getPointDirection(); 
 
     //Accelerates the floater in the direction it is pointing (myPointDirection)   
-    public void accelerate (double dAmount, String direction) {          
+    public void accelerate (double dAmount) {          
         //convert the current direction the floater is pointing to radians    
         double dRadians = myPointDirection*(Math.PI/180);
         //change coordinates of direction of travel
-        if (direction == "x") {
             myDirectionX += ((dAmount) * Math.cos(dRadians));
-        }
-        if (direction == "y") {
             myDirectionY += ((dAmount) * Math.sin(dRadians)); 
-        }   
     } 
-
-    //Deccelerates the floater from xDirection and yDirection
-    public void decelerate (double dAmount) {          
-        //convert the current direction the floater is pointing to radians    
-        double dRadians = myPointDirection*(Math.PI/180);
-
-        // convert movement into angle
-        double getAngleX = Math.acos(abs((float)(myDirectionX / Math.sqrt(Math.pow((float)myDirectionY,2) + Math.pow((float)myDirectionX,2)))));
-        double getAngleY = Math.asin(abs((float)(myDirectionY / Math.sqrt(Math.pow((float)myDirectionY,2) + Math.pow((float)myDirectionX,2)))));
-
-        //change coordinates of direction of travel
-        if (myDirectionX < 0) {
-            myDirectionX += dAmount * Math.cos(getAngleX);
-        } 
-        if (myDirectionX > 0) {
-            myDirectionX -= dAmount * Math.cos(getAngleX);
-        }
-        if (myDirectionY < 0) {
-            myDirectionY += dAmount * Math.sin(getAngleY);
-        }
-        if (myDirectionY > 0) {
-            myDirectionY -= dAmount * Math.sin(getAngleY);
-        }
-    }  
 
     public void turn (int nDegreesOfRotation)   {     
         //rotates the floater by a given number of degrees    

@@ -3,12 +3,14 @@ public static final float DECCELERATION_AMOUNT = 0.25;
 public static final float ROUNDING_AMOUNT = 0.25;
 public static final float CORRECTION_SPEED = 0.15;
 
-ArrayList <Asteroid> r = new ArrayList <Asteroid>();
+ArrayList <Asteroid> r = new ArrayList <Asteroid> ();
+ArrayList <Bullet> b = new ArrayList <Bullet> ();
 Star[] s;
 
 Spaceship Player = new Spaceship();
 boolean wIsPressed, aIsPressed, dIsPressed, zIsPressed = false;
-boolean canPress = true;
+boolean canPressZ = true;
+boolean canPressSpace = true;
 
 public void setup() {
     size(500, 500);
@@ -17,15 +19,15 @@ public void setup() {
     Player.setX(width/2);
     Player.setY(height/2);
 
-    for(int i = 0; i < (int)(Math.random()*10+15); i++) {
+    for(int i = 0; i < (int)(Math.random()*20+25); i++) {
         r.add(new Asteroid());
-    } 
+    }  
 
     s = new Star[500];
     for(int i = 0; i < s.length; i++) {
         s[i] = new Star();
         s[i].setStroke((float)(Math.random()*2+1));
-    } 
+    }
 }
 
 public void draw() {
@@ -37,16 +39,24 @@ public void draw() {
         entry.show();
         entry.move();
         entry.turn(entry.getRotationSpeed());
+        
     }
     Player.show();
     Player.move();
     movement();
 
-    if (zIsPressed && canPress) {
+    for(int i = 0; i < r.size(); i++) {
+        if (dist(Player.getX(), Player.getY(), r.get(i).getX(), r.get(i).getY()) < 12) {
+            r.remove(i);
+            i--;
+        }
+    }
+
+    if (zIsPressed && canPressZ) {
         Player.setX((int)(Math.random()*width));
         Player.setY((int)(Math.random()*height));
         Player.turn((int)(Math.random()*361));
-        canPress = false;
+        canPressZ = false;
     }
 }
 
@@ -162,6 +172,6 @@ void keyReleased() {
     if ( key == 'd' || keyCode == RIGHT ) { dIsPressed = false; } else
     if ( key == 'z' ) { 
         zIsPressed = false;  
-        canPress = true;
+        canPressZ = true;
     }
 }
