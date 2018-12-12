@@ -32,6 +32,11 @@ public void setup() {
 
 public void draw() {
     background(240);
+
+    if(spaceIsPressed) {
+        b.add(new Bullet((Math.cos(Player.getPointDirection()*(Math.PI/180))), (Math.sin(Player.getPointDirection()*(Math.PI/180))), Player.getX(), Player.getY()));
+    }
+
     for(int i = 0; i < s.length; i++) {
         s[i].show();
     }
@@ -69,10 +74,6 @@ public void draw() {
         } else if (b.get(i).getY() < 0){     
           b.remove(i);     
         }   
-    }
-
-    if(spaceIsPressed) {
-        b.add(new Bullet((Math.cos(Player.getPointDirection()*(Math.PI/180))), (Math.sin(Player.getPointDirection()*(Math.PI/180))), Player.getX(), Player.getY()));
     }
 
     if (zIsPressed && canPressZ) {
