@@ -8,7 +8,7 @@ ArrayList <Bullet> b = new ArrayList <Bullet> ();
 Star[] s;
 
 Spaceship Player = new Spaceship();
-boolean wIsPressed, aIsPressed, dIsPressed, zIsPressed = false;
+boolean wIsPressed, aIsPressed, dIsPressed, zIsPressed, spaceIsPressed = false;
 boolean canPressZ = true;
 boolean canPressSpace = true;
 
@@ -39,8 +39,13 @@ public void draw() {
         entry.show();
         entry.move();
         entry.turn(entry.getRotationSpeed());
-        
     }
+
+    for(Bullet entry : b) {
+        entry.show();
+        entry.move();
+    }
+
     Player.show();
     Player.move();
     movement();
@@ -50,6 +55,24 @@ public void draw() {
             r.remove(i);
             i--;
         }
+    }
+
+    for(int i = 0; i < b.size(); i++) {
+        if(b.get(i).getX() > width) {     
+            b.remove(i); 
+        } else if (b.get(i).getX() <0) {     
+            b.remove(i);  
+        }    
+        
+        if(b.get(i).getY() > height) {    
+          b.remove(i);   
+        } else if (b.get(i).getY() < 0){     
+          b.remove(i);     
+        }   
+    }
+
+    if(spaceIsPressed) {
+        b.add(new Bullet((Math.cos(Player.getPointDirection()*(Math.PI/180))), (Math.sin(Player.getPointDirection()*(Math.PI/180))), Player.getX(), Player.getY()));
     }
 
     if (zIsPressed && canPressZ) {
@@ -161,9 +184,8 @@ void keyPressed() {
     if ( key == 'w' || keyCode == UP ) { wIsPressed = true; } else 
     if ( key == 'a' || keyCode == LEFT ) { aIsPressed = true; } else
     if ( key == 'd' || keyCode == RIGHT ) { dIsPressed = true; } else
-    if ( key == 'z' ) { 
-        zIsPressed = true; 
-    }
+    if ( key == 'z' ) { zIsPressed = true; } else 
+    if ( keyCode == 32 ) { spaceIsPressed = true; }
 }
 
 void keyReleased() {
@@ -173,5 +195,7 @@ void keyReleased() {
     if ( key == 'z' ) { 
         zIsPressed = false;  
         canPressZ = true;
+    } else if (keyCode == 32) {
+        spaceIsPressed = false;
     }
 }
