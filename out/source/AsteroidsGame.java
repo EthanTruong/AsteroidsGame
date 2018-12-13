@@ -27,6 +27,7 @@ Spaceship Player = new Spaceship();
 boolean wIsPressed, aIsPressed, dIsPressed, zIsPressed, spaceIsPressed = false;
 boolean canPressZ = true;
 boolean canPressSpace = true;
+int canShoot = 0;
 
 public void setup() {
     
@@ -50,46 +51,16 @@ public void draw() {
     background(240);
 
     if(spaceIsPressed) {
-        b.add(new Bullet((Math.cos(Player.getPointDirection()*(Math.PI/180))), (Math.sin(Player.getPointDirection()*(Math.PI/180))), Player.getX(), Player.getY()));
+        if(canShoot == 3) {
+            b.add(new Bullet(10*(Math.cos(Player.getPointDirection()*(Math.PI/180))), 10*(Math.sin(Player.getPointDirection()*(Math.PI/180))), Player.getX(), Player.getY(), (int)Player.getPointDirection()));
+            canShoot = 0;
+        } else {
+            canShoot++;
+        }
     }
 
     for(int i = 0; i < s.length; i++) {
         s[i].show();
-    }
-    for(Asteroid entry : r) {
-        entry.show();
-        entry.move();
-        entry.turn(entry.getRotationSpeed());
-    }
-
-    for(Bullet entry : b) {
-        entry.show();
-        entry.move();
-    }
-
-    Player.show();
-    Player.move();
-    movement();
-
-    for(int i = 0; i < r.size(); i++) {
-        if (dist(Player.getX(), Player.getY(), r.get(i).getX(), r.get(i).getY()) < 12) {
-            r.remove(i);
-            i--;
-        }
-    }
-
-    for(int i = 0; i < b.size(); i++) {
-        if(b.get(i).getX() > width) {     
-            b.remove(i); 
-        } else if (b.get(i).getX() <0) {     
-            b.remove(i);  
-        }    
-        
-        if(b.get(i).getY() > height) {    
-          b.remove(i);   
-        } else if (b.get(i).getY() < 0){     
-          b.remove(i);     
-        }   
     }
 
     if (zIsPressed && canPressZ) {
@@ -97,6 +68,45 @@ public void draw() {
         Player.setY((int)(Math.random()*height));
         Player.turn((int)(Math.random()*361));
         canPressZ = false;
+    }
+
+    for(int i = 0; i < b.size(); i++) {
+        b.get(i).show();
+        b.get(i).move();
+    }
+
+    Player.show();
+    Player.move();
+    movement();
+
+    for(Asteroid entry : r) {
+        entry.show();
+        entry.move();
+        entry.turn(entry.getRotationSpeed());
+    }
+
+    for(int i = 0; i < r.size(); i++) {
+        if (dist(Player.getX(), Player.getY(), r.get(i).getX(), r.get(i).getY()) < 12) {
+            r.remove(i);
+        } else {
+            for(int j = 0; j < b.size(); j++) {
+                if (dist(b.get(j).getX(), b.get(j).getY(), r.get(i).getX(), r.get(i).getY()) < 12) { 
+                    r.remove(i); 
+                }
+            }
+        }  
+    }
+
+    for(int i = 0; i < b.size(); i++) {
+        if(b.get(i).getY() > height) {    
+            b.remove(i);   
+        } else if (b.get(i).getY() < 0){     
+            b.remove(i);     
+        } else if(b.get(i).getX() > width) {     
+            b.remove(i); 
+        } else if (b.get(i).getX() <0) {     
+            b.remove(i);  
+        }
     }
 }
 
@@ -270,16 +280,18 @@ class Asteroid extends Floater {
 }
 class Bullet extends Floater {
 
-    public Bullet(double xDir, double yDir, int centerX, int centerY) {
+    public Bullet(double xDir, double yDir, int centerX, int centerY, int angle) {
         corners = 6; //(int)(Math.random()*4+3);
-        int[] xS = {1, 0, -1, -1, 0, 1};
-        int[] yS = {3, 4, 3, -3, -4, -3}; 
+        int[] xS = {3, 4, 3, -3, -4, -3};
+        int[] yS = {1, 0, -1, -1, 0, 1}; 
         xCorners = xS;
         yCorners = yS;
         myDirectionX = xDir;
         myDirectionY = yDir;
         myCenterX = centerX;
         myCenterY = centerY;
+        myColor = 0xfff44242;
+        myPointDirection = angle;
     }
 
     public void move () { //move the floater in the current direction of travel
@@ -453,6 +465,7 @@ class Star { //note that this class does NOT extend Floater
 
     public void show() {
         fill(0,0,0,10);
+        stroke(0,0,0);
         strokeWeight(stroke);
         point(starX, starY);
     }

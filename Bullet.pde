@@ -1,15 +1,17 @@
 class Bullet extends Floater {
 
-    public Bullet(double xDir, double yDir, int centerX, int centerY) {
+    public Bullet(double xDir, double yDir, int centerX, int centerY, int angle) {
         corners = 6; //(int)(Math.random()*4+3);
-        int[] xS = {1, 0, -1, -1, 0, 1};
-        int[] yS = {3, 4, 3, -3, -4, -3}; 
+        int[] xS = {3, 4, 3, -3, -4, -3};
+        int[] yS = {1, 0, -1, -1, 0, 1}; 
         xCorners = xS;
         yCorners = yS;
         myDirectionX = xDir;
         myDirectionY = yDir;
         myCenterX = centerX;
         myCenterY = centerY;
+        myColor = #f44242;
+        myPointDirection = angle;
     }
 
     public void move () { //move the floater in the current direction of travel

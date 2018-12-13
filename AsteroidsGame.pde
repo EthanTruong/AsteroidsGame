@@ -11,6 +11,7 @@ Spaceship Player = new Spaceship();
 boolean wIsPressed, aIsPressed, dIsPressed, zIsPressed, spaceIsPressed = false;
 boolean canPressZ = true;
 boolean canPressSpace = true;
+int canShoot = 0;
 
 public void setup() {
     size(500, 500);
@@ -34,46 +35,16 @@ public void draw() {
     background(240);
 
     if(spaceIsPressed) {
-        b.add(new Bullet((Math.cos(Player.getPointDirection()*(Math.PI/180))), (Math.sin(Player.getPointDirection()*(Math.PI/180))), Player.getX(), Player.getY()));
+        if(canShoot == 3) {
+            b.add(new Bullet(10*(Math.cos(Player.getPointDirection()*(Math.PI/180))), 10*(Math.sin(Player.getPointDirection()*(Math.PI/180))), Player.getX(), Player.getY(), (int)Player.getPointDirection()));
+            canShoot = 0;
+        } else {
+            canShoot++;
+        }
     }
 
     for(int i = 0; i < s.length; i++) {
         s[i].show();
-    }
-    for(Asteroid entry : r) {
-        entry.show();
-        entry.move();
-        entry.turn(entry.getRotationSpeed());
-    }
-
-    for(Bullet entry : b) {
-        entry.show();
-        entry.move();
-    }
-
-    Player.show();
-    Player.move();
-    movement();
-
-    for(int i = 0; i < r.size(); i++) {
-        if (dist(Player.getX(), Player.getY(), r.get(i).getX(), r.get(i).getY()) < 12) {
-            r.remove(i);
-            i--;
-        }
-    }
-
-    for(int i = 0; i < b.size(); i++) {
-        if(b.get(i).getX() > width) {     
-            b.remove(i); 
-        } else if (b.get(i).getX() <0) {     
-            b.remove(i);  
-        }    
-        
-        if(b.get(i).getY() > height) {    
-          b.remove(i);   
-        } else if (b.get(i).getY() < 0){     
-          b.remove(i);     
-        }   
     }
 
     if (zIsPressed && canPressZ) {
@@ -82,6 +53,44 @@ public void draw() {
         Player.turn((int)(Math.random()*361));
         canPressZ = false;
     }
+
+    for(int i = 0; i < b.size(); i++) {
+        b.get(i).show();
+        b.get(i).move(); 
+        
+        if(b.get(i).getY() > height) {    
+            b.remove(i);   
+        } else if (b.get(i).getY() < 0){     
+            b.remove(i);     
+        } else if(b.get(i).getX() > width) {     
+            b.remove(i); 
+        } else if (b.get(i).getX() <0) {     
+            b.remove(i);
+        } else {
+            for(int j = 0; j < r.size(); j++) {
+                if (dist(b.get(i).getX(), b.get(i).getY(), r.get(j).getX(), r.get(j).getY()) < 12) { 
+                    r.remove(j);
+                    b.remove(i);
+                }
+            }
+        }
+    }
+
+    Player.show();
+    Player.move();
+    movement();
+
+    for(Asteroid entry : r) {
+        entry.show();
+        entry.move();
+        entry.turn(entry.getRotationSpeed());
+    }
+
+    for(int i = 0; i < r.size(); i++) {
+        if (dist(Player.getX(), Player.getY(), r.get(i).getX(), r.get(i).getY()) < 12) {
+            r.remove(i);
+        }
+    } 
 }
 
 // player movement

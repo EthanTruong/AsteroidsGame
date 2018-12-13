@@ -9,6 +9,7 @@ class Star { //note that this class does NOT extend Floater
 
     public void show() {
         fill(0,0,0,10);
+        stroke(0,0,0);
         strokeWeight(stroke);
         point(starX, starY);
     }
