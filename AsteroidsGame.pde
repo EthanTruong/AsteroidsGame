@@ -66,13 +66,6 @@ public void draw() {
             b.remove(i); 
         } else if (b.get(i).getX() <0) {     
             b.remove(i);
-        } else {
-            for(int j = 0; j < r.size(); j++) {
-                if (dist(b.get(i).getX(), b.get(i).getY(), r.get(j).getX(), r.get(j).getY()) < 12) { 
-                    r.remove(j);
-                    b.remove(i);
-                }
-            }
         }
     }
 
@@ -89,6 +82,15 @@ public void draw() {
     for(int i = 0; i < r.size(); i++) {
         if (dist(Player.getX(), Player.getY(), r.get(i).getX(), r.get(i).getY()) < 12) {
             r.remove(i);
+            break;
+        } else {
+            for(int j = 0; j < b.size(); j++) {
+                if (dist(b.get(j).getX(), b.get(j).getY(), r.get(i).getX(), r.get(i).getY()) < 12) { 
+                    b.remove(j);
+                    r.remove(i);
+                    break;
+                }
+            }
         }
     } 
 }

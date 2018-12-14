@@ -72,7 +72,17 @@ public void draw() {
 
     for(int i = 0; i < b.size(); i++) {
         b.get(i).show();
-        b.get(i).move();
+        b.get(i).move(); 
+        
+        if(b.get(i).getY() > height) {    
+            b.remove(i);   
+        } else if (b.get(i).getY() < 0){     
+            b.remove(i);     
+        } else if(b.get(i).getX() > width) {     
+            b.remove(i); 
+        } else if (b.get(i).getX() <0) {     
+            b.remove(i);
+        }
     }
 
     Player.show();
@@ -88,26 +98,17 @@ public void draw() {
     for(int i = 0; i < r.size(); i++) {
         if (dist(Player.getX(), Player.getY(), r.get(i).getX(), r.get(i).getY()) < 12) {
             r.remove(i);
+            break;
         } else {
             for(int j = 0; j < b.size(); j++) {
-                if (dist(b.get(j).getX(), b.get(j).getY(), r.get(i).getX(), r.get(i).getY()) < 12) { 
-                    r.remove(i); 
+                if (dist(b.get(j).getX(), b.get(j).getY(), r.get(i).getX(), r.get(i).getY()) < 10) { 
+                    b.remove(j);
+                    r.remove(i);
+                    break;
                 }
             }
-        }  
-    }
-
-    for(int i = 0; i < b.size(); i++) {
-        if(b.get(i).getY() > height) {    
-            b.remove(i);   
-        } else if (b.get(i).getY() < 0){     
-            b.remove(i);     
-        } else if(b.get(i).getX() > width) {     
-            b.remove(i); 
-        } else if (b.get(i).getX() <0) {     
-            b.remove(i);  
         }
-    }
+    } 
 }
 
 // player movement
@@ -455,7 +456,7 @@ class Spaceship extends Floater {
     public double getMaxSpeedY() {return abs((float)(myMaxSpeed * Math.sin(myPointDirection*(Math.PI/180))));}
 }
 class Star { //note that this class does NOT extend Floater
-    private float starX, starY, stroke;
+    private float starX, starY, strokeSize1;
 
     public Star() {
         starX = (int)(Math.random()*width+1);
@@ -466,12 +467,12 @@ class Star { //note that this class does NOT extend Floater
     public void show() {
         fill(0,0,0,10);
         stroke(0,0,0);
-        strokeWeight(stroke);
+        strokeWeight(strokeSize1);
         point(starX, starY);
     }
 
-    public void setStroke(float size) {
-        stroke = size;
+    public void setStroke(float size1) {
+        strokeSize1 = size1;
     }
 }
   public void settings() {  size(500, 500); }
