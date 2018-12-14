@@ -67,6 +67,10 @@ public void draw() {
         Player.setX((int)(Math.random()*width));
         Player.setY((int)(Math.random()*height));
         Player.turn((int)(Math.random()*361));
+        for(int i = 0; i < r.size(); i++) {
+            r.get(i).setX((int)(Math.random()*width));
+            r.get(i).setY((int)(Math.random()*height));
+        }
         canPressZ = false;
     }
 
@@ -101,7 +105,7 @@ public void draw() {
             break;
         } else {
             for(int j = 0; j < b.size(); j++) {
-                if (dist(b.get(j).getX(), b.get(j).getY(), r.get(i).getX(), r.get(i).getY()) < 10) { 
+                if (dist(b.get(j).getX(), b.get(j).getY(), r.get(i).getX(), r.get(i).getY()) < 12) { 
                     b.remove(j);
                     r.remove(i);
                     break;
@@ -456,23 +460,23 @@ class Spaceship extends Floater {
     public double getMaxSpeedY() {return abs((float)(myMaxSpeed * Math.sin(myPointDirection*(Math.PI/180))));}
 }
 class Star { //note that this class does NOT extend Floater
-    private float starX, starY, strokeSize1;
+    private float starX, starY, strokeSize;
 
     public Star() {
         starX = (int)(Math.random()*width+1);
         starY = (int)(Math.random()*height+1);
-        stroke = 1;
+        strokeSize = 1;
     }
 
     public void show() {
         fill(0,0,0,10);
         stroke(0,0,0);
-        strokeWeight(strokeSize1);
+        strokeWeight(strokeSize);
         point(starX, starY);
     }
 
-    public void setStroke(float size1) {
-        strokeSize1 = size1;
+    public void setStroke(float size) {
+        strokeSize = size;
     }
 }
   public void settings() {  size(500, 500); }

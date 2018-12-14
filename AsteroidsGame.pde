@@ -51,6 +51,10 @@ public void draw() {
         Player.setX((int)(Math.random()*width));
         Player.setY((int)(Math.random()*height));
         Player.turn((int)(Math.random()*361));
+        for(int i = 0; i < r.size(); i++) {
+            r.get(i).setX((int)(Math.random()*width));
+            r.get(i).setY((int)(Math.random()*height));
+        }
         canPressZ = false;
     }
 
